@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>职工个人中心</title>
+    <script>
+        $(document).ready(function () {
+            $("#updateMsg").click(function () {
+                $.ajax({
+                    type:'POST',  //提交方法是POST
+                    url:'/user/checkPwd', //请求的路径
+                    data:{"pwd":pwd}, //以JSON字符串形式把 user 传到后台
+                    dataType:'json', //后台返回的数据类型是html文本
+                    timeout:1000,  //请求超时时间，毫秒
+
+                    success:function(mark){   //请求成功的回调方法
+                        if(mark != "" && mark == "true"){
+                            //若登录成功，跳转到"/main.html"
+                            window.location.href='/update.html';
+                        }else if(mark == false){
+                            $("#title_msg").html("密码错误！");
+                        }
+                    }
+                });
+
+
+            })
+
+            //拿到对应列的ID去修改
+            $(".updateBtn").on("click",function () {
+                var id=$(this).attr("id");
+                alert(id);
+            })
+
+
+        })
+
+
+    </script>
+</head>
+<body>
+
+<table>
+    <tr>
+        <th>id</th>
+        <th id="">姓名</th>
+        <th>密码</th>
+        <th>性别</th>
+        <th>年龄</th>
+        <th>生日</th>
+        <th>操作</th>
+    </tr>
+
+    <tr th:each="user:${session.selectAll}">
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.name}"></td>
+        <td th:text="${user.pwd}"></td>
+        <td th:text="${user.sex}"></td>
+        <td th:text="${user.age}"></td>
+        <td th:text="${user.birthDate}"></td>
+        <td>
+            <input type="button" name="updateBtn" th:action="updateMsg" value="修改">
+            <input type="button"  th:action="delMsg" value="删除">
+        </td>
+
+    </tr>
+</table>
+</body>
+</html>

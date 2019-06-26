@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>职工考勤系统</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <script th:src="@{/js/jquery.min.js}" src="./js/jquery.min.js"></script>
+    <script>
+
+        $(document).on("click", "#login", function() {
+            var name=$("#name").val();
+            var pwd=$("#pwd").val();
+            if (name==""||name==null){
+                $("#name").focus();
+                $("#s2").html("");
+                $("#s1").css("color","red");
+                $("#s1").html("用户名不能为空");
+            }else if (pwd==""||pwd==null){
+                $("#pwd").focus();
+                $("#s1").html("");
+                $("#s2").css("color","red");
+                $("#s2").html("密码不能为空");
+            } else {
+
+                $.ajax({
+                    url:"/user/login",
+                    data:{"name":name,"pwd":pwd},
+                    type:"post",
+                    dataType:"json",
+                    success:function (data) {
+                        //alert(data.mark)
+                        if (data.mark){
+                            window.location.href="/user/index"
+                        }else {
+                            $("#s1").html("");
+                            $("#s2").html("");
+                            $("#s3").html("<p>用户名或密码错误</p>")
+
+                        }
+
+                    }
+
+                })
+            }
+
+        });
+    </script>
+</head>
+<body>
+<span id="s3"></span>
+    登录名：
+    <input name="name" id="name" type="text">
+    <span id="s1"></span>
+    密码：
+    <input name="pwd" id="pwd" type="password">
+    <span id="s2"></span>
+    <input type="submit" name="login" value="登录"  id="login">
+    <input type="reset" name="reset" value="重置">
+    <br>
+<a href="/user/toRegister">注册</a>
+
+</body>
+
+</html>

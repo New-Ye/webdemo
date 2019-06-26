@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>职工注册中心</title>
+    <script th:src="@{/js/jquery.min.js}" src="./js/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $("#pwd2").bind("blur",function () {
+                var pwd=$("#pwd").val();
+                var pwd2=$("#pwd2").val();
+                if (pwd!=pwd2){
+                    $("#checkpwd_msg").html("两次密码不一致！");
+                }else{
+                    $("#checkpwd_msg").html("");
+                }
+            })
+
+            $("#name").bind("blur",function () {
+
+                if ($("#name").val()==null||$("#name").val()===""){
+                    $("#name_msg").html("用户名不能为空！");
+                }else{
+                    $("#name_msg").html("");
+                }
+
+            })
+
+            $("#pwd").bind("blur",function () {
+
+                if ($("#pwd").val()==null||$("#pwd").val()===""){
+                    $("#pwd_msg").html("密码不能为空！");
+                }else{
+                    $("#pwd_msg").html("");
+                }
+
+            })
+
+            $("#age").bind("blur",function () {
+
+                if ($("#age").val()==null||$("#age").val()===""){
+                    $("#age_msg").html("密码不能为空！");
+                }else{
+                    $("#age_msg").html("");
+                }
+
+            })
+
+            $("#birthDate").bind("blur",function () {
+
+                if ($("#birthDate").val()==null||$("#birthDate").val()===""){
+                    $("#birthDate_msg").html("密码不能为空！");
+                }else{
+                    $("#birthDate_msg").html("");
+                }
+
+            })
+
+
+            $("#name").bind("blur",function () {
+                var name=$("#name").val();
+                $.ajax({
+                    type:"post",
+                    url:"/user/checkRegister",
+                    data:{"name":name},
+                    dataType:"json",
+                    success:function (m) {
+                        if (name !== "" && name != null){
+                            if (m.mark){
+                                $("#name_msg").html("该用户名可用！")
+
+                            } else {
+                                $("#name_msg").html("该用户名已被注册！")
+
+                            }
+                        }
+                    }
+                })
+            })
+        })
+
+
+    </script>
+
+</head>
+<body>
+<form  method="post" id="registerForm" action="/user/register">
+    <table border="0" align="center" cellpadding="0">
+        <tr>
+            <td colspan="2" align="center">
+
+                <H3>欢迎来到职工注册中心,你将成为能力有限公司的一员!</H3>
+
+                <h2>用户注册</h2>
+            </td>
+        </tr>
+        <tr>
+            <td>用户名：</td>
+            <td><input type="text" name="name" id="name" class="userMsg"/></td>
+            <td><span id="name_msg"></span></td>
+        </tr>
+        <tr>
+            <td>密码：</td>
+            <td><input type="password" name="pwd" id="pwd" class="userMsg"/></td>
+            <td><span id="pwd_msg"></span></td>
+        </tr>
+        <tr>
+            <td>再次输入密码：</td>
+            <td><input type="password" name="pwd2" id="pwd2" class="userMsg"/></td>
+            <td><span id="checkpwd_msg"></span></td>
+        </tr>
+
+        <tr>
+            <td>性别：</td>
+            <td><input name="sex" type="radio" value="0" checked>男
+                <input name="sex" type="radio" value="1">女
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>年龄：</td>
+            <td><input type="text" name="age" id="age" class="userMsg"/></td>
+            <td><span id="age_msg"></span></td>
+        </tr>
+        <tr>
+            <td>生日：</td>
+            <td><input type="date" name="birthDate" id="birthDate" class="userMsg"/></td>
+            <td><span id="birthDate_msg"></span></td>
+        </tr>
+
+        <tr>
+            <td colspan="3" align="center">
+                <input type="submit" name="submit" id="submit" value="提交"/>
+                <input type="reset" name="reset" value="重置"/>
+            </td>
+        </tr>
+    </table>
+</form>
+
+</body>
+</html>
